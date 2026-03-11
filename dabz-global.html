@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DABZ GLOBAL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Outfit:wght@200;300;400;500;600&family=Barlow+Condensed:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{overflow-x:hidden;cursor:none;font-family:'Outfit',sans-serif}
+
+/* ── THEME ── */
+:root{
+  --bg:#080808;--bg2:#0f0f0f;--surface:#141414;
+  --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.12);
+  --text:#f0f0f0;--muted:#555;--muted2:#888;
+  --accent:#4de8d4;--accent-glow:rgba(77,232,212,0.12);
+  --nav-bg:rgba(8,8,8,0.9);
+}
+[data-theme="light"]{
+  --bg:#f5f5f5;--bg2:#ececec;--surface:#fff;
+  --border:rgba(0,0,0,0.07);--border2:rgba(0,0,0,0.13);
+  --text:#0a0a0a;--muted:#aaa;--muted2:#666;
+  --accent:#0077bb;--accent-glow:rgba(0,119,187,0.1);
+  --nav-bg:rgba(245,245,245,0.92);
+}
+body{background:var(--bg);color:var(--text);transition:background .35s,color .35s}
+
+/* ── CURSOR ── */
+#cur,#cur-ring{position:fixed;pointer-events:none;z-index:9999;border-radius:50%;transform:translate(-50%,-50%)}
+#cur{width:7px;height:7px;background:var(--accent)}
+#cur-ring{width:34px;height:34px;border:1px solid rgba(77,232,212,.35);transition:width .2s,height .2s,border-color .2s}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;width:100%;z-index:800;
+  height:62px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 5vw;background:var(--nav-bg);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);transition:background .35s;
+}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-mark{
+  width:34px;height:34px;border-radius:8px;background:#000;
+  border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;
+}
+.logo-mark svg{width:28px;height:28px}
+.logo-text{font-family:'Syncopate',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.18em;color:var(--text)}
+.nav-links{display:flex;gap:2.2rem;list-style:none;position:absolute;left:50%;transform:translateX(-50%)}
+.nav-links a{font-family:'Barlow Condensed',sans-serif;font-size:.84rem;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:var(--text)}
+.nav-r{display:flex;align-items:center;gap:.8rem}
+.theme-btn{background:none;border:1px solid var(--border2);border-radius:60px;padding:5px 14px;font-family:'Barlow Condensed',sans-serif;font-size:.8rem;letter-spacing:.06em;color:var(--muted2);cursor:none;transition:all .2s}
+.theme-btn:hover{border-color:var(--accent);color:var(--text)}
+.nav-wa{background:var(--text);color:var(--bg);border:none;border-radius:60px;padding:7px 18px;font-family:'Syncopate',sans-serif;font-size:.58rem;font-weight:700;letter-spacing:.12em;text-decoration:none;cursor:none;transition:opacity .2s}
+.nav-wa:hover{opacity:.8}
+
+/* ── HERO ── */
+#hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 5vw 80px;position:relative;overflow:hidden}
+.h-grid{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:70px 70px;-webkit-mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,#000 20%,transparent 100%);mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,#000 20%,transparent 100%)}
+.h-glow{position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,var(--accent-glow),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+.h-inner{position:relative;z-index:1;max-width:900px}
+
+.h-logo{width:96px;height:96px;border-radius:20px;background:#000;border:1px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;margin:0 auto 2.4rem;box-shadow:0 0 60px var(--accent-glow);animation:up .8s cubic-bezier(.16,1,.3,1) both;overflow:hidden}
+.h-logo svg{width:80px;height:80px}
+
+.h-eye{display:inline-flex;align-items:center;gap:.6rem;font-family:'Barlow Condensed',sans-serif;font-size:.78rem;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:1.8rem;animation:up .8s .08s cubic-bezier(.16,1,.3,1) both}
+.h-eye::before,.h-eye::after{content:'';width:20px;height:1px;background:var(--accent);opacity:.5}
+
+.h-title{font-family:'Syncopate',sans-serif;font-size:clamp(3rem,9vw,8.5rem);font-weight:700;line-height:.95;letter-spacing:.04em;text-transform:uppercase;margin-bottom:2rem;animation:up .8s .16s cubic-bezier(.16,1,.3,1) both}
+.h-title .ac{background:linear-gradient(120deg,var(--text) 0%,var(--accent) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+.h-tag{display:flex;align-items:center;justify-content:center;gap:1.2rem;font-family:'Barlow Condensed',sans-serif;font-size:clamp(.95rem,2.2vw,1.3rem);font-weight:300;letter-spacing:.16em;text-transform:uppercase;color:var(--muted2);margin-bottom:3rem;animation:up .8s .24s cubic-bezier(.16,1,.3,1) both}
+.h-tag .dot{width:4px;height:4px;border-radius:50%;background:var(--border2);flex-shrink:0}
+.h-tag strong{color:var(--text);font-weight:400}
+
+.h-btns{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;animation:up .8s .32s cubic-bezier(.16,1,.3,1) both}
+.btn-p{display:inline-flex;align-items:center;gap:.4rem;background:var(--text);color:var(--bg);border:none;border-radius:60px;padding:13px 28px;font-family:'Syncopate',sans-serif;font-size:.58rem;font-weight:700;letter-spacing:.14em;text-decoration:none;text-transform:uppercase;cursor:none;transition:opacity .2s,transform .2s}
+.btn-p:hover{opacity:.85;transform:translateY(-2px)}
+.btn-g{display:inline-flex;align-items:center;background:none;color:var(--text);border:1px solid var(--border2);border-radius:60px;padding:13px 28px;font-family:'Syncopate',sans-serif;font-size:.58rem;font-weight:400;letter-spacing:.14em;text-decoration:none;text-transform:uppercase;cursor:none;transition:border-color .2s,transform .2s}
+.btn-g:hover{border-color:var(--accent);transform:translateY(-2px)}
+
+/* ── TICKER ── */
+.ticker{border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg2);padding:13px 0;overflow:hidden}
+.ticker-inner{display:flex;width:max-content;animation:tick 30s linear infinite}
+.ticker-inner:hover{animation-play-state:paused}
+.ti{display:flex;align-items:center;gap:.9rem;white-space:nowrap;padding:0 2.2rem;font-family:'Barlow Condensed',sans-serif;font-size:.8rem;font-weight:300;letter-spacing:.18em;text-transform:uppercase;color:var(--muted2)}
+.ti-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0}
+
+/* ── SECTIONS ── */
+.wrap{padding:110px 5vw}
+.eye{font-family:'Barlow Condensed',sans-serif;font-size:.8rem;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem;display:flex;align-items:center;gap:.7rem}
+.eye::before{content:'';width:18px;height:1px;background:var(--accent)}
+.sh2{font-family:'Syncopate',sans-serif;font-size:clamp(1.7rem,3.8vw,3.2rem);font-weight:700;text-transform:uppercase;letter-spacing:.04em;line-height:1.08;margin-bottom:1rem}
+.ssub{font-family:'Outfit',sans-serif;font-size:.98rem;font-weight:300;color:var(--muted2);line-height:1.8;max-width:500px}
+
+/* ── SERVICES ── */
+#services{background:var(--bg)}
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:4.5rem;border:1px solid var(--border);border-radius:18px;overflow:hidden}
+.svc{background:var(--surface);padding:2.8rem 2.2rem;position:relative;overflow:hidden;transition:background .3s}
+.svc::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);transform:scaleX(0);transition:transform .4s;transform-origin:center}
+.svc:hover{background:var(--bg2)}
+.svc:hover::after{transform:scaleX(1)}
+.svc-n{font-family:'Syncopate',sans-serif;font-size:3.5rem;font-weight:700;color:var(--border2);line-height:1;margin-bottom:1.6rem;transition:color .3s}
+.svc:hover .svc-n{color:var(--border2)}
+.svc-ico{font-size:2.2rem;margin-bottom:1.2rem;display:block}
+.svc-title{font-family:'Syncopate',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.7rem}
+.svc-desc{font-family:'Outfit',sans-serif;font-size:.9rem;font-weight:300;color:var(--muted2);line-height:1.72}
+.svc-link{display:inline-flex;align-items:center;gap:.35rem;margin-top:1.8rem;font-family:'Barlow Condensed',sans-serif;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);opacity:0;transform:translateX(-10px);transition:opacity .3s,transform .3s}
+.svc:hover .svc-link{opacity:1;transform:translateX(0)}
+
+/* ── PRODUCTS ── */
+#products{background:var(--bg2);padding:0}
+.prod-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:4.5rem;border:1px solid var(--border);border-radius:18px;overflow:hidden}
+.pc{background:var(--bg);padding:2.2rem 1.6rem;text-align:center;transition:background .3s;position:relative;text-decoration:none;color:inherit;display:block;cursor:none}
+.pc:hover{background:var(--surface)}
+.pc::before{content:'';position:absolute;top:0;left:0;bottom:0;width:1px;background:linear-gradient(180deg,transparent,var(--accent),transparent);opacity:0;transition:opacity .3s}
+.pc:hover::before{opacity:1}
+.pc-ico{font-size:2rem;display:block;margin-bottom:.9rem;transition:transform .3s}
+.pc:hover .pc-ico{transform:translateY(-5px) scale(1.1)}
+.pc-name{font-family:'Barlow Condensed',sans-serif;font-size:.82rem;font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:var(--muted2);transition:color .3s}
+.pc:hover .pc-name{color:var(--text)}
+
+/* ── ABOUT ── */
+#about{background:var(--bg)}
+.ab-grid{display:grid;grid-template-columns:1fr 1fr;gap:7rem;align-items:center;margin-top:4.5rem}
+.stat-list{border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-top:2.5rem}
+.stat{display:flex;align-items:center;justify-content:space-between;padding:1.3rem 1.7rem;background:var(--surface);border-bottom:1px solid var(--border);transition:background .2s}
+.stat:last-child{border-bottom:none}
+.stat:hover{background:var(--bg2)}
+.stat-l{font-family:'Barlow Condensed',sans-serif;font-size:.78rem;font-weight:300;letter-spacing:.12em;text-transform:uppercase;color:var(--muted2)}
+.stat-v{font-family:'Syncopate',sans-serif;font-size:.9rem;font-weight:700;color:var(--text)}
+.ab-visual{display:flex;align-items:center;justify-content:center;position:relative}
+.ab-frame{width:300px;height:300px;border-radius:24px;background:#000;border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;box-shadow:0 0 80px var(--accent-glow)}
+.ab-frame svg{width:240px;height:240px}
+.ab-frame::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 110%,var(--accent-glow),transparent 60%)}
+.ab-ring1,.ab-ring2{position:absolute;border-radius:50%;border:1px solid rgba(77,232,212,0.1)}
+.ab-ring1{width:380px;height:380px;animation:spin 22s linear infinite}
+.ab-ring2{width:480px;height:480px;border-style:dashed;animation:spin 36s linear infinite reverse}
+
+/* ── WHY ── */
+#why{background:var(--bg2);padding:0}
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin-top:4.5rem;border:1px solid var(--border);border-radius:18px;overflow:hidden}
+.wc{background:var(--bg);padding:2.6rem;display:flex;gap:1.8rem;transition:background .3s}
+.wc:hover{background:var(--surface)}
+.wc-n{font-family:'Syncopate',sans-serif;font-size:2.5rem;font-weight:700;color:var(--border2);line-height:1;flex-shrink:0;width:2.8rem;transition:color .3s}
+.wc:hover .wc-n{color:var(--accent)}
+.wc h4{font-family:'Syncopate',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem}
+.wc p{font-family:'Outfit',sans-serif;font-size:.9rem;font-weight:300;color:var(--muted2);line-height:1.72}
+
+/* ── CONTACT ── */
+#contact{background:var(--bg)}
+.ct-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;margin-top:4.5rem;align-items:start}
+.ct-cards{border:1px solid var(--border);border-radius:18px;overflow:hidden}
+.ct-item{display:flex;align-items:center;gap:1.2rem;padding:1.5rem 1.8rem;background:var(--surface);border-bottom:1px solid var(--border);transition:background .2s}
+.ct-item:last-child{border-bottom:none}
+.ct-item:hover{background:var(--bg2)}
+.ct-ico{width:40px;height:40px;border-radius:10px;background:var(--accent-glow);border:1px solid rgba(77,232,212,0.15);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.ct-l{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted2);margin-bottom:3px}
+.ct-v{font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:500;color:var(--text)}
+.ct-v a{color:inherit;text-decoration:none;transition:color .2s}
+.ct-v a:hover{color:var(--accent)}
+.ct-right{display:flex;flex-direction:column;justify-content:center;gap:1.6rem}
+.ct-right p{font-family:'Outfit',sans-serif;font-size:.98rem;font-weight:300;color:var(--muted2);line-height:1.8}
+.wa-btn{display:inline-flex;align-items:center;gap:.6rem;background:var(--text);color:var(--bg);border:none;border-radius:60px;padding:15px 30px;font-family:'Syncopate',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;cursor:none;transition:opacity .2s,transform .2s;width:fit-content}
+.wa-btn:hover{opacity:.85;transform:translateY(-2px)}
+
+/* ── FOOTER ── */
+footer{background:var(--bg2);border-top:1px solid var(--border);padding:3.5rem 5vw}
+.ft-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;margin-bottom:2.5rem}
+.ft-logo{display:flex;align-items:center;gap:9px}
+.ft-mark{width:32px;height:32px;border-radius:7px;background:#000;border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.ft-mark svg{width:26px;height:26px}
+.ft-name{font-family:'Syncopate',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.18em;color:var(--text)}
+.ft-links{display:flex;gap:1.8rem;flex-wrap:wrap}
+.ft-links a{font-family:'Barlow Condensed',sans-serif;font-size:.8rem;font-weight:300;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);text-decoration:none;transition:color .2s}
+.ft-links a:hover{color:var(--text)}
+.ft-bot{border-top:1px solid var(--border);padding-top:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.ft-copy{font-family:'Barlow Condensed',sans-serif;font-size:.75rem;font-weight:300;letter-spacing:.06em;color:var(--muted2)}
+.ft-slogan{font-family:'Barlow Condensed',sans-serif;font-size:.8rem;font-weight:300;letter-spacing:.16em;color:var(--muted2)}
+
+/* ── REVEAL ── */
+.rv{opacity:0;transform:translateY(36px);transition:opacity .75s cubic-bezier(.16,1,.3,1),transform .75s cubic-bezier(.16,1,.3,1)}
+.rv.on{opacity:1;transform:translateY(0)}
+
+/* ── KEYFRAMES ── */
+@keyframes up{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── MOBILE ── */
+@media(max-width:860px){
+  .nav-links{display:none}
+  .svc-grid,.why-grid{grid-template-columns:1fr}
+  .prod-grid{grid-template-columns:repeat(2,1fr)}
+  .ab-grid,.ct-grid{grid-template-columns:1fr}
+  .ab-visual{display:none}
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-ring"></div>
+
+<!-- NAV -->
+<nav>
+  <a class="logo" href="#hero">
+    <div class="logo-mark">
+      <!-- DG Monogram SVG -->
+      <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="80" height="80" fill="#000"/>
+        <path d="M14 20 L14 60 L38 60 C52 60 62 50 62 40 C62 30 52 20 38 20 Z M26 32 L36 32 C44 32 50 35.5 50 40 C50 44.5 44 48 36 48 L26 48 Z" fill="white"/>
+        <path d="M54 40 L54 52 L70 52 L70 44 L62 44 L62 36 L70 36 L70 28 L54 28 L54 36" fill="white" opacity="0.9"/>
+      </svg>
+    </div>
+    <span class="logo-text">Dabz Global</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#products">Products</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-r">
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">☀ Light</button>
+    <a class="nav-wa" href="https://wa.me/2348144343028" target="_blank">WhatsApp ↗</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="h-grid"></div>
+  <div class="h-glow"></div>
+  <div class="h-inner">
+    <div class="h-logo">
+      <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="80" height="80" fill="#000"/>
+        <path d="M8 16 L8 64 L36 64 C52 64 64 53 64 40 C64 27 52 16 36 16 Z M20 28 L34 28 C44 28 52 33 52 40 C52 47 44 52 34 52 L20 52 Z" fill="white"/>
+        <path d="M56 40 L56 54 L74 54 L74 46 L64 46 L64 34 L74 34 L74 26 L56 26 L56 34" fill="white" opacity="0.88"/>
+      </svg>
+    </div>
+    <div class="h-eye">Premium Tech · Nigeria</div>
+    <h1 class="h-title">Dabz<br><span class="ac">Global</span></h1>
+    <div class="h-tag">
+      <strong>🔀 Swap</strong>
+      <span class="dot"></span>
+      <strong>💵 Sell</strong>
+      <span class="dot"></span>
+      <strong>💰 Buy</strong>
+    </div>
+    <div class="h-btns">
+      <a class="btn-p" href="#services">Our Services</a>
+      <a class="btn-g" href="#contact">Get in Touch</a>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span class="ti"><span class="ti-dot"></span>Smartphones</span>
+    <span class="ti"><span class="ti-dot"></span>Tablets</span>
+    <span class="ti"><span class="ti-dot"></span>Laptops</span>
+    <span class="ti"><span class="ti-dot"></span>Smart Home</span>
+    <span class="ti"><span class="ti-dot"></span>Wearables</span>
+    <span class="ti"><span class="ti-dot"></span>Accessories</span>
+    <span class="ti"><span class="ti-dot"></span>Buy · Sell · Swap</span>
+    <span class="ti"><span class="ti-dot"></span>Premium Grade</span>
+    <span class="ti"><span class="ti-dot"></span>Smartphones</span>
+    <span class="ti"><span class="ti-dot"></span>Tablets</span>
+    <span class="ti"><span class="ti-dot"></span>Laptops</span>
+    <span class="ti"><span class="ti-dot"></span>Smart Home</span>
+    <span class="ti"><span class="ti-dot"></span>Wearables</span>
+    <span class="ti"><span class="ti-dot"></span>Accessories</span>
+    <span class="ti"><span class="ti-dot"></span>Buy · Sell · Swap</span>
+    <span class="ti"><span class="ti-dot"></span>Premium Grade</span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="wrap">
+    <div class="eye rv">What We Do</div>
+    <h2 class="sh2 rv">Three ways<br>to deal.</h2>
+    <p class="ssub rv">Whether you're upgrading, offloading, or hunting for the perfect device DABZ GLOBAL makes it seamless.</p>
+    <div class="svc-grid rv">
+      <div class="svc">
+        <div class="svc-n">01</div>
+        <span class="svc-ico">🔀</span>
+        <div class="svc-title">Swap</div>
+        <p class="svc-desc">Trade your old gadget for something newer and better. Fair valuations, zero hassle, upgrade without paying the full price.</p>
+        <div class="svc-link">Get a Quote →</div>
+      </div>
+      <div class="svc">
+        <div class="svc-n">02</div>
+        <span class="svc-ico">💵</span>
+        <div class="svc-title">Sell</div>
+        <p class="svc-desc">Shop a handpicked selection of premium smartphones, laptops, wearables, and accessories. Quality you can trust.</p>
+        <div class="svc-link">Browse Shop →</div>
+      </div>
+      <div class="svc">
+        <div class="svc-n">03</div>
+        <span class="svc-ico">💰</span>
+        <div class="svc-title">Buy</div>
+        <p class="svc-desc">Ready to let go of your device? We make instant, competitive cash offers. Fast, clean, no stress.</p>
+        <div class="svc-link">Start Now →</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section id="products">
+  <div class="wrap">
+    <div class="eye rv">What We Carry</div>
+    <h2 class="sh2 rv">Every category.<br>One destination.</h2>
+    <div class="prod-grid rv">
+      <a class="pc" href="shop.html?category=smartphones"><span class="pc-ico">📱</span><div class="pc-name">Smartphones</div></a>
+      <a class="pc" href="shop.html?category=tablets"><span class="pc-ico">📲</span><div class="pc-name">Tablets</div></a>
+      <a class="pc" href="shop.html?category=laptops"><span class="pc-ico">💻</span><div class="pc-name">Laptops</div></a>
+      <a class="pc" href="shop.html?category=computers"><span class="pc-ico">🖥️</span><div class="pc-name">Computers</div></a>
+      <a class="pc" href="shop.html?category=accessories"><span class="pc-ico">🎧</span><div class="pc-name">Accessories</div></a>
+      <a class="pc" href="shop.html?category=cables"><span class="pc-ico">🔌</span><div class="pc-name">Cables & Chargers</div></a>
+      <a class="pc" href="shop.html?category=smarthome"><span class="pc-ico">🏠</span><div class="pc-name">Smart Home</div></a>
+      <a class="pc" href="shop.html?category=wearables"><span class="pc-ico">⌚</span><div class="pc-name">Wearables</div></a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="wrap">
+    <div class="ab-grid">
+      <div>
+        <div class="eye rv">Who We Are</div>
+        <h2 class="sh2 rv">Trusted tech.<br>Done right.</h2>
+        <p class="ssub rv">DABZ GLOBAL is a premium tech dealership built on trust, speed, and quality. Every deal, buy, sell, or swap, is seamless, fast, and fair.</p>
+        <div class="stat-list rv">
+          <div class="stat"><span class="stat-l">Condition</span><span class="stat-v">New & Used</span></div>
+          <div class="stat"><span class="stat-l">Brands</span><span class="stat-v">All Major</span></div>
+          <div class="stat"><span class="stat-l">WhatsApp Support</span><span class="stat-v">24 / 7</span></div>
+          <div class="stat"><span class="stat-l">Turnaround</span><span class="stat-v">Fast & Reliable</span></div>
+        </div>
+      </div>
+      <div class="ab-visual">
+        <div class="ab-ring1"></div>
+        <div class="ab-ring2"></div>
+        <div class="ab-frame rv">
+          <svg viewBox="0 0 240 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="240" height="240" fill="#000"/>
+            <path d="M28 52 L28 188 L108 188 C156 188 190 158 190 120 C190 82 156 52 108 52 Z M68 92 L104 92 C132 92 150 104 150 120 C150 136 132 148 104 148 L68 148 Z" fill="white"/>
+            <path d="M168 120 L168 160 L212 160 L212 136 L192 136 L192 104 L212 104 L212 80 L168 80 L168 104" fill="white" opacity="0.85"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section id="why">
+  <div class="wrap">
+    <div class="eye rv">Why Choose Us</div>
+    <h2 class="sh2 rv">The DABZ<br>difference.</h2>
+    <div class="why-grid rv">
+      <div class="wc">
+        <div class="wc-n">01</div>
+        <div><h4>Premium Quality</h4><p>Every device is carefully checked before it reaches you. New or used, we hold the bar high.</p></div>
+      </div>
+      <div class="wc">
+        <div class="wc-n">02</div>
+        <div><h4>Fair Pricing</h4><p>Competitive deals on every transaction. No hidden fees, no surprises. Just honest pricing.</p></div>
+      </div>
+      <div class="wc">
+        <div class="wc-n">03</div>
+        <div><h4>Fast Turnaround</h4><p>We move at pace. Quote, swap, or pick up. Everything is done quickly and cleanly.</p></div>
+      </div>
+      <div class="wc">
+        <div class="wc-n">04</div>
+        <div><h4>Reliable Support</h4><p>Reach us on call, WhatsApp, or Instagram. We're always accessible and ready to help.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="wrap">
+    <div class="eye rv">Get in Touch</div>
+    <h2 class="sh2 rv">Let's make<br>a deal.</h2>
+    <div class="ct-grid">
+      <div class="ct-cards rv">
+        <div class="ct-item">
+          <div class="ct-ico">📞</div>
+          <div>
+            <div class="ct-l">Call Lines</div>
+            <div class="ct-v"><a href="tel:08076709313">08076709313</a> &nbsp;·&nbsp; <a href="tel:08144343028">08144343028</a></div>
+          </div>
+        </div>
+        <div class="ct-item">
+          <div class="ct-ico">💬</div>
+          <div>
+            <div class="ct-l">WhatsApp</div>
+            <div class="ct-v"><a href="https://wa.me/2348144343028" target="_blank">08144343028 · Chat Now ↗</a></div>
+          </div>
+        </div>
+        <div class="ct-item">
+          <div class="ct-ico">📸</div>
+          <div>
+            <div class="ct-l">Instagram</div>
+            <div class="ct-v"><a href="https://instagram.com/dabz_global_official" target="_blank">@dabz_global_official ↗</a></div>
+          </div>
+        </div>
+        <div class="ct-item">
+          <div class="ct-ico">🛠️</div>
+          <div>
+            <div class="ct-l">Complaints</div>
+            <div class="ct-v"><a href="tel:09078338831">09078338831</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="ct-right rv">
+        <p>Have a question about a device, want to book a swap, or need a quick quote? Send us a WhatsApp and we'll reply fast.</p>
+        <a class="wa-btn" href="https://wa.me/2348144343028?text=Hi%20DABZ%20GLOBAL%2C%20I%20want%20to%20make%20a%20deal!" target="_blank">💬 &nbsp;Message on WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-top">
+    <div class="ft-logo">
+      <div class="ft-mark">
+        <svg viewBox="0 0 80 80" fill="none"><rect width="80" height="80" fill="#000"/><path d="M8 16 L8 64 L36 64 C52 64 64 53 64 40 C64 27 52 16 36 16 Z M20 28 L34 28 C44 28 52 33 52 40 C52 47 44 52 34 52 L20 52 Z" fill="white"/><path d="M56 40 L56 54 L74 54 L74 46 L64 46 L64 34 L74 34 L74 26 L56 26 L56 34" fill="white" opacity="0.88"/></svg>
+      </div>
+      <span class="ft-name">Dabz Global</span>
+    </div>
+    <div class="ft-links">
+      <a href="#services">Services</a>
+      <a href="#products">Products</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      <a href="https://instagram.com/dabz_global_official" target="_blank">Instagram</a>
+      <a href="https://wa.me/2348144343028" target="_blank">WhatsApp</a>
+    </div>
+  </div>
+  <div class="ft-bot">
+    <span class="ft-copy">© 2025 DABZ GLOBAL. All rights reserved.</span>
+    <span class="ft-slogan">we SWAP · we SELL · we BUY</span>
+  </div>
+</footer>
+
+<script>
+// Cursor
+const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cur.style.left=mx+'px';cur.style.top=my+'px';
+});
+(function loop(){
+  rx+=(mx-rx)*.13;ry+=(my-ry)*.13;
+  ring.style.left=rx+'px';ring.style.top=ry+'px';
+  requestAnimationFrame(loop);
+})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{ring.style.width='52px';ring.style.height='52px';ring.style.borderColor='rgba(77,232,212,.6)'});
+  el.addEventListener('mouseleave',()=>{ring.style.width='34px';ring.style.height='34px';ring.style.borderColor='rgba(77,232,212,.35)'});
+});
+
+// Theme
+function toggleTheme(){
+  const html=document.documentElement,btn=document.getElementById('themeBtn');
+  if(html.dataset.theme==='dark'){html.dataset.theme='light';btn.textContent='🌑 Dark'}
+  else{html.dataset.theme='dark';btn.textContent='☀ Light'}
+}
+
+// Scroll reveal
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');obs.unobserve(e.target)}});
+},{threshold:.08,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
